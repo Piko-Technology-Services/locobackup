@@ -36,6 +36,8 @@
   <link rel="stylesheet" href="assets/css/tiny-slider.css" />
   <link rel="stylesheet" href="assets/css/animate.css" />
   <link rel="stylesheet" href="assets/css/main.css" />
+  <!-- SweetAlert2 CSS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     .download-section {
       background: #f9fafc;
@@ -69,51 +71,34 @@
       padding: 12px;
       font-weight: 500;
       width: 100%;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .btn-submit:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+    .loading-spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #ffffff;
+      border-top: 2px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 8px;
+    }
+    .btn-submit.loading .loading-spinner {
+      display: inline-block;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
 
 <body>
-  <!-- ========================= header start ========================= -->
-  <header class="header">
-    <div class="navbar-area">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-lg-12">
-            <nav class="navbar navbar-expand-lg">
-              <a class="navbar-brand" href="index.html">
-                <img src="assets/images/logo/logo.png" alt="Loco Logo" width="50%"/>
-              </a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
-                <span class="toggler-icon"></span>
-                <span class="toggler-icon"></span>
-                <span class="toggler-icon"></span>
-              </button>
-
-              <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
-                <div class="ms-auto">
-                  <ul id="nav" class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="page-scroll" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="page-scroll" href="index.html#about">About</a></li>
-                    <li class="nav-item"><a class="page-scroll" href="index.html#features">Features</a></li>
-                    <li class="nav-item"><a class="page-scroll active" href="download.html">Download</a></li>
-                    <li class="nav-item"><a class="page-scroll" href="index.html#footer">Support</a></li>
-                  </ul>
-                </div>
-              </div>
-
-              <div class="header-btn">
-                <a href="#download" class="main-btn btn-hover">Download (Demo)</a>
-              </div>
-            </nav>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-  <!-- ========================= header end ========================= -->
 
   <!-- ========================= Download Section ========================= -->
   <section id="download" class="download-section my-5">
@@ -123,9 +108,34 @@
         <h3>Request Demo Package</h3>
         <p>Enter your email to receive the download link to the demo version of Loco Email Backup.</p>
 
-        <form action="send_mail.php" method="POST">
+        <form id="demoForm" action="send_mail.php" method="POST">
           <input type="email" name="email" class="form-control mb-3" placeholder="Your Email Address" required>
-          <button type="submit" class="btn-submit">Submit Request</button>
+          
+          <select name="os" class="form-control mb-3" required>
+            <option value="">Select Your Operating System</option>
+            <option value="Windows 10">Windows 10</option>
+            <option value="Windows 11">Windows 11</option>
+            <option value="macOS Monterey">macOS Monterey</option>
+            <option value="macOS Ventura">macOS Ventura</option>
+            <option value="macOS Sonoma">macOS Sonoma</option>
+            <option value="Ubuntu 20.04">Ubuntu 20.04</option>
+            <option value="Ubuntu 22.04">Ubuntu 22.04</option>
+            <option value="Ubuntu 24.04">Ubuntu 24.04</option>
+            <option value="Debian 11">Debian 11</option>
+            <option value="Debian 12">Debian 12</option>
+            <option value="CentOS 7">CentOS 7</option>
+            <option value="CentOS 8">CentOS 8</option>
+            <option value="Red Hat Enterprise Linux">Red Hat Enterprise Linux</option>
+            <option value="Fedora">Fedora</option>
+            <option value="openSUSE">openSUSE</option>
+            <option value="Arch Linux">Arch Linux</option>
+            <option value="Other Linux Distribution">Other Linux Distribution</option>
+          </select>
+          
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <span class="loading-spinner"></span>
+            <span class="btn-text">Submit Request</span>
+          </button>
         </form>
       </div>
     </div>
@@ -133,16 +143,133 @@
 
   <!-- ========================= footer start ========================= -->
   <footer id="footer" class="footer pt-120">
-    <div class="container text-center">
-      <a href="#home"><img src="assets/images/logo/logo.png" width="80" alt="Loco Logo"></a>
-      <p class="mt-3 text-muted">© All rights reserved – Loco Email Backup</p>
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-10">
+          <div class="footer-widget">
+            <div class="logo">
+              <a href="#home"><img src="assets/images/logo/logo.png" alt="Loco Logo" width="40%"></a>
+            </div>
+            <p class="desc">
+              Loco is a secure desktop application designed to make email backup and offline access simple, private, and reliable.
+            </p>
+            <ul class="social-links">
+              <li><a href="#"><i class="lni lni-facebook"></i></a></li>
+              <li><a href="#"><i class="lni lni-linkedin"></i></a></li>
+              <li><a href="#"><i class="lni lni-twitter"></i></a></li>
+              <li><a href="#"><i class="lni lni-envelope"></i></a></li>
+            </ul>
+            <p class="mt-3 text-muted">© All rights reserved – Loco Email Backup</p>
+          </div>
+        </div>
+
+        <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6 offset-xl-1">
+          <div class="footer-widget">
+            <h3>Explore</h3>
+            <ul class="links">
+              <li><a href="#home">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#features">Features</a></li>
+              <li><a href="#cta">Download</a></li>
+              <li><a href="#footer">Support</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-2 col-md-6 col-sm-6">
+          <div class="footer-widget">
+            <h3>Key Features</h3>
+            <ul class="links">
+              <li><a href="#features">Multi-Account Backup</a></li>
+              <li><a href="#features">Concurrent Downloads</a></li>
+              <li><a href="#features">Offline Access</a></li>
+              <li><a href="#features">Data Privacy</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+          <div class="footer-widget">
+            <h3>Subscribe for Updates</h3>
+            <form action="#">
+              <input type="email" placeholder="Your Email">
+              <button class="main-btn btn-hover">Subscribe</button>
+            </form>
+          </div>
+        </div>
+
+      </div>
     </div>
   </footer>
+  <!-- ========================= footer end ========================= -->
+
 
   <a href="#" class="scroll-top btn-hover">
     <i class="lni lni-chevron-up"></i>
   </a>
 
   <script src="assets/js/bootstrap-5.0.0-beta2.min.js"></script>
+  
+  <script>
+    document.getElementById('demoForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const form = this;
+      const submitBtn = document.getElementById('submitBtn');
+      const btnText = submitBtn.querySelector('.btn-text');
+      
+      // Show loading state
+      submitBtn.classList.add('loading');
+      submitBtn.disabled = true;
+      btnText.textContent = 'Sending Request...';
+      
+      // Create FormData object
+      const formData = new FormData(form);
+      
+      // Send AJAX request
+      fetch('send_mail.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Reset button state
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+        btnText.textContent = 'Submit Request';
+        
+        if (data.success) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Request Sent Successfully!',
+            text: 'Thank you for your interest. We will send you the demo package shortly.',
+            confirmButtonColor: '#0d6efd'
+          });
+          form.reset();
+          window.location.href = 'index.html';
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Request Failed',
+            text: data.message || 'Something went wrong. Please try again later.',
+            confirmButtonColor: '#0d6efd'
+          });
+        }
+      })
+      .catch(error => {
+        // Reset button state
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+        btnText.textContent = 'Submit Request';
+        
+        Swal.fire({
+          icon: 'error',
+          title: 'Network Error',
+          text: 'Unable to send request. Please check your internet connection and try again.',
+          confirmButtonColor: '#0d6efd'
+        });
+      });
+    });
+  </script>
 </body>
 </html>
